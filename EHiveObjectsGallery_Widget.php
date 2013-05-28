@@ -4,7 +4,7 @@
 	Plugin URI: http://developers.ehive.com/wordpress-plugins/
 	Author: Vernon Systems limited
 	Description: A widget that displays a gallery of objects by catalogue type in eHive. The <a href="http://developers.ehive.com/wordpress-plugins#ehiveaccess" target="_blank">eHiveAccess plugin</a> must be installed.
-	Version: 2.1.1
+	Version: 2.1.2
 	Author URI: http://vernonsystems.com
 	License: GPL2+
 */
@@ -73,7 +73,7 @@ class EHiveObjectsGallery_Widget extends WP_Widget {
 			try {
 				$siteType = $eHiveAccess->getSiteType();
 				$siteAccountId = $eHiveAccess->getAccountId();
-				$siteCommunityId = $eHiveAccess->getCommunityId();
+				$siteCommunityId = $eHiveAccess->getCommunityId();				
 					
 				$galleryType = $instance['gallery_type'];
 				
@@ -195,33 +195,41 @@ class EHiveObjectsGallery_Widget extends WP_Widget {
 						}
 						
 					} else if ( $siteType == 'Account' ) {
+						
+						$searchPrivateRecords = $eHiveAccess->getSearchPrivateRecords();
+						if ($searchPrivateRecords) {
+							$content = "any";
+						} else {
+							$content = "public";
+						}
+						
 						switch($objectFilter) {
 							case 'interesting':
-								if ($archivesEnabled)		$objectRecordsCollectionArchives		= $eHiveApi->getInterestingObjectRecordsInAccount($accountId, 'archives',		false, 0, $limit);
-								if ($archaeologyEnabled)	$objectRecordsCollectionArchaeology		= $eHiveApi->getInterestingObjectRecordsInAccount($accountId, 'archaeology',	false, 0, $limit);
-								if ($artEnabled)			$objectRecordsCollectionArt				= $eHiveApi->getInterestingObjectRecordsInAccount($accountId, 'art',			false, 0, $limit);
-								if ($historyEnabled)		$objectRecordsCollectionHistory			= $eHiveApi->getInterestingObjectRecordsInAccount($accountId, 'history',		false, 0, $limit);
-								if ($libraryEnabled)		$objectRecordsCollectionLibrary			= $eHiveApi->getInterestingObjectRecordsInAccount($accountId, 'library',		false, 0, $limit);
-								if ($naturalScienceEnabled)	$objectRecordsCollectionNaturalScience	= $eHiveApi->getInterestingObjectRecordsInAccount($accountId, 'natural_science',	false, 0, $limit);
-								if ($photographyEnabled)	$objectRecordsCollectionPhotography		= $eHiveApi->getInterestingObjectRecordsInAccount($accountId, 'photography',	false, 0, $limit);
+								if ($archivesEnabled)		$objectRecordsCollectionArchives		= $eHiveApi->getInterestingObjectRecordsInAccount($accountId, 'archives',		false, 0, $limit, $content);
+								if ($archaeologyEnabled)	$objectRecordsCollectionArchaeology		= $eHiveApi->getInterestingObjectRecordsInAccount($accountId, 'archaeology',	false, 0, $limit, $content);
+								if ($artEnabled)			$objectRecordsCollectionArt				= $eHiveApi->getInterestingObjectRecordsInAccount($accountId, 'art',			false, 0, $limit, $content);
+								if ($historyEnabled)		$objectRecordsCollectionHistory			= $eHiveApi->getInterestingObjectRecordsInAccount($accountId, 'history',		false, 0, $limit, $content);
+								if ($libraryEnabled)		$objectRecordsCollectionLibrary			= $eHiveApi->getInterestingObjectRecordsInAccount($accountId, 'library',		false, 0, $limit, $content);
+								if ($naturalScienceEnabled)	$objectRecordsCollectionNaturalScience	= $eHiveApi->getInterestingObjectRecordsInAccount($accountId, 'natural_science',false, 0, $limit, $content);
+								if ($photographyEnabled)	$objectRecordsCollectionPhotography		= $eHiveApi->getInterestingObjectRecordsInAccount($accountId, 'photography',	false, 0, $limit, $content);
 								break;
 							case 'popular':
-								if ($archivesEnabled)		$objectRecordsCollectionArchives		= $eHiveApi->getPopularObjectRecordsInAccount($accountId, 'archives',		false, 0, $limit);
-								if ($archaeologyEnabled)	$objectRecordsCollectionArchaeology		= $eHiveApi->getPopularObjectRecordsInAccount($accountId, 'archaeology',	false, 0, $limit);
-								if ($artEnabled)			$objectRecordsCollectionArt				= $eHiveApi->getPopularObjectRecordsInAccount($accountId, 'art',			false, 0, $limit);
-								if ($historyEnabled)		$objectRecordsCollectionHistory			= $eHiveApi->getPopularObjectRecordsInAccount($accountId, 'history',		false, 0, $limit);
-								if ($libraryEnabled)		$objectRecordsCollectionLibrary			= $eHiveApi->getPopularObjectRecordsInAccount($accountId, 'library',		false, 0, $limit);
-								if ($naturalScienceEnabled)	$objectRecordsCollectionNaturalScience	= $eHiveApi->getPopularObjectRecordsInAccount($accountId, 'natural_science',	false, 0, $limit);
-								if ($photographyEnabled)	$objectRecordsCollectionPhotography		= $eHiveApi->getPopularObjectRecordsInAccount($accountId, 'photography',	false, 0, $limit);
+								if ($archivesEnabled)		$objectRecordsCollectionArchives		= $eHiveApi->getPopularObjectRecordsInAccount($accountId, 'archives',		false, 0, $limit, $content);
+								if ($archaeologyEnabled)	$objectRecordsCollectionArchaeology		= $eHiveApi->getPopularObjectRecordsInAccount($accountId, 'archaeology',	false, 0, $limit, $content);
+								if ($artEnabled)			$objectRecordsCollectionArt				= $eHiveApi->getPopularObjectRecordsInAccount($accountId, 'art',			false, 0, $limit, $content);
+								if ($historyEnabled)		$objectRecordsCollectionHistory			= $eHiveApi->getPopularObjectRecordsInAccount($accountId, 'history',		false, 0, $limit, $content);
+								if ($libraryEnabled)		$objectRecordsCollectionLibrary			= $eHiveApi->getPopularObjectRecordsInAccount($accountId, 'library',		false, 0, $limit, $content);
+								if ($naturalScienceEnabled)	$objectRecordsCollectionNaturalScience	= $eHiveApi->getPopularObjectRecordsInAccount($accountId, 'natural_science',false, 0, $limit, $content);
+								if ($photographyEnabled)	$objectRecordsCollectionPhotography		= $eHiveApi->getPopularObjectRecordsInAccount($accountId, 'photography',	false, 0, $limit, $content);
 								break;
 							case 'recent':
-								if ($archivesEnabled)		$objectRecordsCollectionArchives		= $eHiveApi->getRecentObjectRecordsInAccount($accountId, 'archives',		false, 0, $limit);
-								if ($archaeologyEnabled)	$objectRecordsCollectionArchaeology		= $eHiveApi->getRecentObjectRecordsInAccount($accountId, 'archaeology',		false, 0, $limit);
-								if ($artEnabled)			$objectRecordsCollectionArt				= $eHiveApi->getRecentObjectRecordsInAccount($accountId, 'art',				false, 0, $limit);
-								if ($historyEnabled)		$objectRecordsCollectionHistory			= $eHiveApi->getRecentObjectRecordsInAccount($accountId, 'history',			false, 0, $limit);
-								if ($libraryEnabled)		$objectRecordsCollectionLibrary			= $eHiveApi->getRecentObjectRecordsInAccount($accountId, 'library',			false, 0, $limit);
-								if ($naturalScienceEnabled)	$objectRecordsCollectionNaturalScience	= $eHiveApi->getRecentObjectRecordsInAccount($accountId, 'natural_science',	false, 0, $limit);
-								if ($photographyEnabled)	$objectRecordsCollectionPhotography		= $eHiveApi->getRecentObjectRecordsInAccount($accountId, 'photography',		false, 0, $limit);
+								if ($archivesEnabled)		$objectRecordsCollectionArchives		= $eHiveApi->getRecentObjectRecordsInAccount($accountId, 'archives',		false, 0, $limit, $content);
+								if ($archaeologyEnabled)	$objectRecordsCollectionArchaeology		= $eHiveApi->getRecentObjectRecordsInAccount($accountId, 'archaeology',		false, 0, $limit, $content);
+								if ($artEnabled)			$objectRecordsCollectionArt				= $eHiveApi->getRecentObjectRecordsInAccount($accountId, 'art',				false, 0, $limit, $content);
+								if ($historyEnabled)		$objectRecordsCollectionHistory			= $eHiveApi->getRecentObjectRecordsInAccount($accountId, 'history',			false, 0, $limit, $content);
+								if ($libraryEnabled)		$objectRecordsCollectionLibrary			= $eHiveApi->getRecentObjectRecordsInAccount($accountId, 'library',			false, 0, $limit, $content);
+								if ($naturalScienceEnabled)	$objectRecordsCollectionNaturalScience	= $eHiveApi->getRecentObjectRecordsInAccount($accountId, 'natural_science',	false, 0, $limit, $content);
+								if ($photographyEnabled)	$objectRecordsCollectionPhotography		= $eHiveApi->getRecentObjectRecordsInAccount($accountId, 'photography',		false, 0, $limit, $content);
 								break;
 						}
 												
