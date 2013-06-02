@@ -98,8 +98,8 @@ This is the first stable release of the eHive Access plugin.
 
 == Screenshots ==
 
-1. screenshot_1.png
-2. screenshot_2.png
+1. eHive Objects Gallery widget
+
 
 == Frequently Asked Questions ==
 
